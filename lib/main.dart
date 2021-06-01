@@ -4,7 +4,7 @@ void main() {
   runApp(MaterialApp(
     home: Scaffold(
       body: Center(
-        child: FlatButton(
+        child: TextButton(
           onPressed: () {},
           child: Text("Fail on purpose"),
         ),
