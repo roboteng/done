@@ -5,6 +5,7 @@ void main() {
     home: Scaffold(
       body: Center(
         child: FlatButton(
+          onPressed: () {},
           child: Text("Fail on purpose"),
         ),
       ),
