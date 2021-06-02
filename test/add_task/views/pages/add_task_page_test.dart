@@ -25,32 +25,23 @@ void main() {
       expect(viewModel.taskName, "my task");
     });
 
-    testWidgets("pressing cancel should call the onCancel function",
-        (tester) async {
-      var pressed = false;
+    for (var action in ["Cancel", "Save"]) {
+      testWidgets("pressing $action should call the on$action function",
+          (tester) async {
+        var pressed = false;
 
-      final viewModel = AddTaskViewModel(() => pressed = true, () {});
-      final page = AddTaskPage(viewModel);
+        final viewModel = AddTaskViewModel(
+          action == "Cancel" ? () => pressed = true : () {},
+          action == "Save" ? () => pressed = true : () {},
+        );
+        final page = AddTaskPage(viewModel);
 
-      await tester.pumpWidget(sampleApp(page));
-      final cancelBtn = find.bySemanticsLabel("Cancel");
+        await tester.pumpWidget(sampleApp(page));
+        final actionBtn = find.bySemanticsLabel(action);
 
-      await tester.tap(cancelBtn);
-      expect(pressed, true);
-    });
-
-    testWidgets("pressing save should call the onSave function",
-        (tester) async {
-      var pressed = false;
-
-      final viewModel = AddTaskViewModel(() {}, () => pressed = true);
-      final page = AddTaskPage(viewModel);
-
-      await tester.pumpWidget(sampleApp(page));
-      final saveBtn = find.bySemanticsLabel("Save");
-
-      await tester.tap(saveBtn);
-      expect(pressed, true);
-    });
+        await tester.tap(actionBtn);
+        expect(pressed, true);
+      });
+    }
   });
 }
