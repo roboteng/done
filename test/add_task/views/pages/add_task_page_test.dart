@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Widget sampleApp(Widget child) => MaterialApp(home: Scaffold(body: child));
+import '../../../core/skeleton_app.dart';
 
 void main() {
   group("Add Tasks", () {
@@ -14,7 +14,7 @@ void main() {
       final page = AddTaskPage(viewModel);
 
       // act
-      await tester.pumpWidget(sampleApp(page));
+      await tester.pumpWidget(skeletonApp(page));
       final tv = find.byKey(ValueKey("addTask"));
       await tester.enterText(tv, "my task");
       await tester.pump();
@@ -37,7 +37,7 @@ void main() {
         final page = AddTaskPage(viewModel);
 
         // act
-        await tester.pumpWidget(sampleApp(page));
+        await tester.pumpWidget(skeletonApp(page));
         final actionBtn = find.bySemanticsLabel(action);
         await tester.tap(actionBtn);
 
