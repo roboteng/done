@@ -28,18 +28,20 @@ void main() {
     for (var action in ["Cancel", "Save"]) {
       testWidgets("pressing $action should call the on$action function",
           (tester) async {
+        // arrange
         var pressed = false;
-
         final viewModel = AddTaskViewModel(
-          action == "Cancel" ? () => pressed = true : () {},
-          action == "Save" ? () => pressed = true : () {},
+          () => pressed = action == "Cancel",
+          () => pressed = action == "Save",
         );
         final page = AddTaskPage(viewModel);
 
+        // act
         await tester.pumpWidget(sampleApp(page));
         final actionBtn = find.bySemanticsLabel(action);
-
         await tester.tap(actionBtn);
+
+        // assert
         expect(pressed, true);
       });
     }
