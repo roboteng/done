@@ -5,62 +5,55 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../../core/skeleton_app.dart';
 
+class TestCase {
+  final String desc;
+  final Task task;
+  final Finder finder;
+  final Matcher expectation;
+
+  TestCase(this.desc, this.task, this.finder, this.expectation);
+}
+
 void main() {
   group("Single Task view", () {
-    testWidgets("should show the name of the task", (tester) async {
-      // arrange
-      final taskName = "task name";
-      final task = Task(taskName, false);
-      final view = SingleTask(task);
-      await tester.pumpWidget(skeletonApp(view));
+    final String taskName = "Task Name";
+    for (TestCase testCase in [
+      TestCase(
+        "should show the name of the task",
+        Task(taskName, false),
+        find.text(taskName),
+        findsOneWidget,
+      ),
+      TestCase(
+        "should have an circle indicator for not completed task",
+        Task(taskName, false),
+        find.byIcon(Icons.circle_outlined),
+        findsOneWidget,
+      ),
+      TestCase(
+        "should not have an circle indicator for completed task",
+        Task(taskName, true),
+        find.byIcon(Icons.circle_outlined),
+        findsNothing,
+      ),
+      TestCase(
+        "should not have an circle indicator for completed task",
+        Task(taskName, true),
+        find.byIcon(Icons.check_circle_outline),
+        findsOneWidget,
+      ),
+    ]) {
+      testWidgets("${testCase.desc}", (tester) async {
+        // arrange
+        final widget = SingleTask(testCase.task);
+        await tester.pumpWidget(skeletonApp(widget));
 
-      // act
-      final text = find.text(taskName);
+        // act
+        final finder = testCase.finder;
 
-      // assert
-      expect(text, findsOneWidget);
-    });
-
-    testWidgets("should have an circle indicator for not completed task",
-        (tester) async {
-      // arrange
-      final task = Task("task name", false);
-      final widget = SingleTask(task);
-      await tester.pumpWidget(skeletonApp(widget));
-
-      // act
-      final icon = find.byIcon(Icons.circle_outlined);
-
-      // assert
-      expect(icon, findsOneWidget);
-    });
-
-    testWidgets("should not have an circle indicator for completed task",
-        (tester) async {
-      // arrange
-      final task = Task("task name", true);
-      final widget = SingleTask(task);
-      await tester.pumpWidget(skeletonApp(widget));
-
-      // act
-      final icon = find.byIcon(Icons.circle_outlined);
-
-      // assert
-      expect(icon, findsNothing);
-    });
-
-    testWidgets("should have an check indicator for completed task",
-        (tester) async {
-      // arrange
-      final task = Task("task name", true);
-      final widget = SingleTask(task);
-      await tester.pumpWidget(skeletonApp(widget));
-
-      // act
-      final icon = find.byIcon(Icons.check_circle_outline);
-
-      // assert
-      expect(icon, findsOneWidget);
-    });
+        // assert
+        expect(finder, testCase.expectation);
+      });
+    }
   });
 }
