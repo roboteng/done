@@ -1,4 +1,6 @@
-import 'package:done/core/task.dart';
+import 'package:done/core/domain/entities/completed_task.dart';
+import 'package:done/core/domain/entities/task.dart';
+import 'package:done/core/domain/entities/uncompleted_task.dart';
 import 'package:done/view_tasks/views/widgets/single_task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,25 +22,25 @@ void main() {
     for (TestCase testCase in [
       TestCase(
         "should show the name of the task",
-        Task(taskName, false),
+        UncompletedTask(taskName),
         find.text(taskName),
         findsOneWidget,
       ),
       TestCase(
         "should have an circle indicator for not completed task",
-        Task(taskName, false),
+        UncompletedTask(taskName),
         find.byIcon(Icons.circle_outlined),
         findsOneWidget,
       ),
       TestCase(
         "should not have an circle indicator for completed task",
-        Task(taskName, true),
+        CompletedTask(taskName),
         find.byIcon(Icons.circle_outlined),
         findsNothing,
       ),
       TestCase(
         "should not have an circle indicator for completed task",
-        Task(taskName, true),
+        CompletedTask(taskName),
         find.byIcon(Icons.check_circle_outline),
         findsOneWidget,
       ),

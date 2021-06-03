@@ -1,4 +1,4 @@
-import 'package:done/core/task.dart';
+import 'package:done/core/domain/entities/task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -9,9 +9,7 @@ class SingleTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(
-        task.completed ? Icons.check_circle_outline : Icons.circle_outlined,
-      ),
+      leading: Icon(task.icon),
       title: Text(task.name),
     );
   }
