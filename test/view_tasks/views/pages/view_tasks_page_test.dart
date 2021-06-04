@@ -1,4 +1,5 @@
 import 'package:done/core/domain/entities/completed_task.dart';
+import 'package:done/core/domain/entities/uncompleted_task.dart';
 import 'package:done/view_tasks/views/pages/view_tasks_page.dart';
 import 'package:done/view_tasks/views/view_tasks_view_model.dart';
 import 'package:done/view_tasks/views/widgets/single_task.dart';
@@ -28,11 +29,33 @@ void main() {
       final page = ViewTasksPage(viewModel);
       viewModel.tasks = [CompletedTask(taskName)];
       await tester.pumpWidget(skeletonApp(page));
+      await tester.pump();
 
       // act
       final completed = find.byWidgetPredicate((widget) {
         if (!(widget is SingleTask)) return false;
         if (!(widget.task is CompletedTask)) return false;
+        return widget.task.name == taskName;
+      });
+
+      // assert
+      expect(completed, findsOneWidget);
+    });
+
+    testWidgets("should update if viewmodel get two updates", (tester) async {
+      // arrange
+      final taskName = "Task Name";
+      final viewModel = ViewTasksViewModel();
+      final page = ViewTasksPage(viewModel);
+      viewModel.tasks = [CompletedTask(taskName)];
+      await tester.pumpWidget(skeletonApp(page));
+      viewModel.tasks = [UncompletedTask(taskName)];
+      await tester.pump();
+
+      // act
+      final completed = find.byWidgetPredicate((widget) {
+        if (!(widget is SingleTask)) return false;
+        if (!(widget.task is UncompletedTask)) return false;
         return widget.task.name == taskName;
       });
 
