@@ -4,7 +4,7 @@ class AddTaskViewModel {
   final VoidCallback onCancel;
   final VoidCallback onSave;
 
-  String taskName;
+  String? taskName;
 
   AddTaskViewModel(this.onCancel, this.onSave);
 }

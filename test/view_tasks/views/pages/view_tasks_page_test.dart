@@ -32,9 +32,8 @@ void main() {
       // act
       final completed = find.byWidgetPredicate((widget) {
         if (!(widget is SingleTask)) return false;
-        final singleTaskWidget = widget as SingleTask;
-        if (!(singleTaskWidget.task is CompletedTask)) return false;
-        return singleTaskWidget.task.name == taskName;
+        if (!(widget.task is CompletedTask)) return false;
+        return widget.task.name == taskName;
       });
 
       // assert
